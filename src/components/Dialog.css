@@ -1,0 +1,35 @@
+/* The Modal (background) */
+.dialog {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.dialog__content {
+  margin: auto;
+  border: 1px solid #888;
+  max-width: 60%;
+}
+
+/* The Close Button */
+.dialog__close {
+  font-size: xx-large;
+  right: 1em;
+  color: #aaaaaa;
+  position: fixed;
+  top: initial;
+  font-weight: bold;
+}
+
+.dialog__close:hover,
+.dialog__close:focus {
+  cursor: pointer;
+}
