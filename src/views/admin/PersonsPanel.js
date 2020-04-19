@@ -10,24 +10,34 @@ class PersonsPanel extends React.Component {
     this.registerPerson = this.registerPerson.bind(this);
     this.deletePerson = this.deletePerson.bind(this);
     this.editPerson = this.editPerson.bind(this);
-    this.toggleShowForm = this.toggleShowForm.bind(this);
+    this.toggleShowRegisterForm = this.toggleShowRegisterForm.bind(this);
+    this.toggleShowEditForm = this.toggleShowEditForm.bind(this);
     this.state = {
       persons: [{ name: "Javier Chavez", email: "jchavezs@unprg.edu.pe" }],
       showRegister: false,
+      showEdit: false,
       editPerson: { name: "", email: "" },
-      formAction: this.registerPerson,
     };
   }
   render() {
-    const form = this.state.showRegister ? (
-      <Dialog closeDialog={this.toggleShowForm}>
+    const formRegister = this.state.showRegister ? (
+      <Dialog closeDialog={this.toggleShowRegisterForm}>
         <div className="content__form">
           <RegisterForm
-            data={this.state.editPerson}
             title="Registrar una persona"
             sendData={this.registerPerson}
             data={this.state.editPerson}
-            action={this.state.formAction}
+          />
+        </div>
+      </Dialog>
+    ) : null;
+    const formEdit = this.state.showEdit ? (
+      <Dialog closeDialog={this.toggleShowEditForm}>
+        <div className="content__form">
+          <RegisterForm
+            data={this.state.editPerson}
+            title="Editar una persona"
+            sendData={this.editPerson}
           />
         </div>
       </Dialog>
@@ -48,20 +58,23 @@ class PersonsPanel extends React.Component {
             <PersonList
               persons={this.state.persons}
               actionDelete={this.deletePerson}
-              actionEdit={this.editPerson}
+              actionEdit={this.toggleShowEditForm}
             />
           </div>
-          {form}
+          {formRegister}
+          {formEdit}
         </div>
       </div>
     );
   }
-  editPerson(id) {
-    this.setState((state) => ({
-      editPerson: state.persons[id],
-      formAction: this.editPerson,
-    }));
-    this.toggleShowForm();
+  editPerson(person) {
+    const persons = this.state.persons;
+    persons[this.state.editPerson.id] = person;
+    console.log(persons);
+    this.setState(function () {
+      return { persons: persons };
+    });
+    this.toggleShowEditForm();
   }
   registerPerson(person) {
     this.setState(function (state) {
@@ -69,14 +82,22 @@ class PersonsPanel extends React.Component {
         persons: state.persons.concat(person),
       };
     });
+    this.toggleShowRegisterForm();
   }
   deletePerson(id) {
     const persons = this.state.persons.filter((person, index) => index !== id);
     this.setState({ persons: persons });
   }
-  toggleShowForm() {
+  toggleShowRegisterForm() {
     this.setState((state) => ({
       showRegister: !state.showRegister,
+    }));
+  }
+  toggleShowEditForm(id) {
+    this.setState((state) => ({
+      editPerson:
+        id != undefined ? { ...state.persons[id], id: id } : state.editPerson,
+      showEdit: !state.showEdit,
     }));
   }
 }
