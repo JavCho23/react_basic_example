@@ -26,7 +26,6 @@ class PersonsPanel extends React.Component {
           <RegisterForm
             title="Registrar una persona"
             sendData={this.registerPerson}
-            data={this.state.editPerson}
           />
         </div>
       </Dialog>
@@ -96,7 +95,7 @@ class PersonsPanel extends React.Component {
   toggleShowEditForm(id) {
     this.setState((state) => ({
       editPerson:
-        id != undefined ? { ...state.persons[id], id: id } : state.editPerson,
+        id !== undefined ? { ...state.persons[id], id: id } : state.editPerson,
       showEdit: !state.showEdit,
     }));
   }
